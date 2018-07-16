@@ -1,0 +1,7 @@
+sawdsawCALLBACK<Enter>
+ddNULLCALLBACK<Enter>
+dnow we are missing the function jackal<Enter>
+dcwhy was that type cast there<Enter>
+ vbecause it was not needed<Enter>
+why is it always putting in a d<Enter>
+cout Systemoutprintln(testing out the new space and back space <BackSpace>
